@@ -16,9 +16,9 @@
 </head>
 <body>
 
-	@include('client.partials.menu')<!-- menu -->
+	@include('admin.partials.menu')<!-- menu -->
 	@yield('body.content')<!-- noi dung -->
-
+<!-- 	@include('client.partials.footer') -->
 	<!-- footer -->
 <!-- javascript -->
 	<script src="{{ url('public/js/jquery-3.2.1.min.js') }}"></script>

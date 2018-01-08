@@ -9,5 +9,5 @@ class DVTN extends Model
     //
     protected $table = 'd_v_t_ns';
 
-	protected $filltable = ['IDDV','TenDV','EmailDV','PasswordDV','AvatarDV','LongitudeDV', 'LatitudeDV', 'DVHDDV', 'SDTDV', 'StatusDV', 'ThongtinDV', 'created_at'];
+	protected $filltable = ['IDDV','TenDV','AvatarDV','LongitudeDV', 'LatitudeDV', 'DVHDDV', 'SDTDV', 'StatusDV', 'ThongtinDV','idDVTN', 'created_at'];
 }

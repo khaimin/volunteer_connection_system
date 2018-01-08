@@ -13,18 +13,18 @@ class CreateTVsTable extends Migration
     public function up()
     {
         Schema::create('t_vs', function (Blueprint $table) {
-            $table->increments('id')->unique();
+            $table->increments('id');
             $table->timestamps();
-            $table->string('IDTV');
+            $table->string('IDTV')->unique();
             $table->string('Ten');
-            $table->string('Email');
-            $table->string('Password');
-            $table->string('Longitude');
-            $table->string('Latitude');
+            $table->double('Longitude',10,7);
+            $table->double('Latitude',10,7);
             $table->string('Avatar');
             $table->text('Thongtin');
             $table->string('DVHD');
             $table->bigInteger('SĐT');
+            $table->integer('idUser')->unsigned();
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
             $table->integer('Status')->default(0);
         });
     }

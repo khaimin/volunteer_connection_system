@@ -7,7 +7,9 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
+use App\DVTN;
+use App\TV;
+use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     /*
@@ -28,7 +30,8 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/register';
+    protected $redirectDVTN = '/abcd';
 
     /**
      * Create a new authentication controller instance.
@@ -63,10 +66,66 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $a =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'rule' => $data['rule'],
             'password' => bcrypt($data['password']),
         ]);
+        if ($a && $data['rule']==2) 
+        {
+            $id = User::select('id')->orderBy('id', 'DESC')->first();
+            $longdv = $data['longdv'];
+            $ladv = $data['ladv'];
+            $dvtn = new DVTN;
+            $dvtn->IDDV = $data['iddv'];
+            $dvtn->TenDV = $data['tendv'];
+            $dvtn->LongitudeDV = $longdv;
+            $dvtn->LatitudeDV = $ladv;
+            $dvtn->DVHDDV = $data['dvhd'];
+            $dvtn->SDTDV = $data['sdt'];
+            $dvtn->AvatarDV = $data['avatar'];
+            
+            
+
+            // $file_name  = $data->file('avatar')->getClientOriginalName();
+            // $dvtn->AvatarDV      = $file_name;
+            // $request->file('avatar')->move('resources/upload/dvtn/avatar',$file_name);
+
+
+            $dvtn->idDVTN = $id->id;
+            $dvtn->ThongtinDV = $data['ttdv'];
+            $dvtn->save();
+            //return redirect()->route('index', compact('a'));
+            
+        }
+        else
+        {
+           $id = User::select('id')->orderBy('id', 'DESC')->first();
+            $longdv = settype($data['longdv'], "double");
+            $ladv = settype($data['ladv'], "double");
+            $dvtn = new TV;
+            $dvtn->IDTV = $data['iddvtv'];
+            $dvtn->Ten = $data['tentv'];
+            $dvtn->Longitude = $longdv;
+            $dvtn->Latitude = $ladv;
+            $dvtn->DVHD = $data['dvhdtv'];
+            $dvtn->SĐT = $data['sdttv'];
+            $dvtn->Avatar = $data['avatartv'];
+
+            // $file_name  = $data->file('avatartv')->getClientOriginalName();
+            // $dvtn->Avatar     = $file_name;
+            // $request->file('avatartv')->move('resources/upload/tv/avatar',$file_name);
+
+
+            $dvtn->idUser = $id->id;
+            $dvtn->Thongtin = $data['ttdvtv'];
+            $dvtn->Status =1;
+            $dvtn->save();
+            return $a; 
+        }
+
+        return $a;
     }
+
 }
