@@ -27,6 +27,7 @@ Route::get('/sk/{IDSK}', ['as' 	=>'sk', 'uses'=>'MapController@sk']);
 //Đăng ký sự kiện
 Route::get('sk/dk/{IDSK}', ['as'=>'dk.sk', 'uses'=>'DKSKController@dksk'])->middleware('CheckUserTV');
 Route::get('sk/huy/{IDSK}', ['as'=>'huy.sk','uses'=>'DKSKController@huysk'])->middleware('CheckUserTV');
+Route::get('/indexfollow', ['as'=>'indexfollow', 'uses'=>'MapController@indexfollow']);
 
 // thong tin tv
 Route::get('/tv', ['as'=>'tv.info', 'uses'=>'TVController@tvinfo'])->middleware('CheckUserTV');
@@ -35,6 +36,8 @@ Route::get('/tv', ['as'=>'tv.info', 'uses'=>'TVController@tvinfo'])->middleware(
 //tìm kiếm
 Route::get('/timdv', ['as'=>'timtheodv', 'uses'=>'MapController@timtheodv']);
 Route::get('/timtg', ['as'=>'timtheotg', 'uses'=>'MapController@timtheotg']);
+Route::post('/timbk', ['as'=>'timtheobk', 'uses'=>'MapController@timtheobk']);
+
 //end tìm kiếm
 
 // ============================================================================
@@ -57,7 +60,7 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::get('/oldsk', ['as'=>'admin.dvtn.sk.oldsk', 'uses'=>'SKController@oldsk'])->middleware('CheckUserDVTN');
 // ds da dang ky sk
 		Route::get('/dadk-{IDSK}', ['as'=>'admin.dvtn.sk.dadk', 'uses'=>'SKController@dadk'])->middleware('CheckUserDVTN');
-
+		Route::get('/excell/{IDSK}', ['as'=>'excell', 'uses'=>'SKController@exportExcell'])->middleware('CheckUserDVTN');
 
 	});
 
@@ -82,6 +85,7 @@ Route::group(['prefix'=>'admin'],function(){
 			Route::get('/edit/{IDSK}', ['as'=>'admin.qtv.sk.edit','uses'=>'AdminController@skedit'])->middleware('CheckAdmin');
 			Route::post('/edit/{IDSK}', ['as'=>'admin.qtv.sk.update','uses'=>'AdminController@skupdate'])->middleware('CheckAdmin');
 			Route::get('/del/{IDSK}', ['as'=>'admin.qtv.sk.del', 'uses'=>'AdminController@skdestroy'])->middleware('CheckAdmin');
+
 		});
 
 	});

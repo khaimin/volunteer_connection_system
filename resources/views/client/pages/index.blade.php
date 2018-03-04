@@ -20,7 +20,8 @@ Home
 				</div>
 
 				<div id="bankinh" class="tabcontent" style="display: none;">
-				    <form action="/action_page.php">
+				    <form action="{{route('timtheobk')}}" method="POST" enctype="multipart/form-data">
+				    	{{ csrf_field() }}
 					  <div class="form-group" style="margin-top: 5px;margin-left: 5px;">
 					    <input type="text" class="form-control" id="bankinh" name="bankinh" placeholder="50km">
 					  </div>
@@ -51,16 +52,32 @@ Home
 @section('body.js')
     <script>
   	function initMap() {
-
-  		var myLatLng = {lat: 10.874108, lng: 106.802827};
+  		var myLatLng = {lat: parseFloat(10.52082917168611), lng: parseFloat(106.63950741291)};
+  		myLatLng = {lat: parseFloat({{$info_user->Latitude}}), lng: parseFloat({{$info_user->Longitude}})};
+  		my_location = {lat: parseFloat({{$info_user->Latitude}}), lng: parseFloat({{$info_user->Longitude}})};
+  		
 		var map = new google.maps.Map(document.getElementById('map'), {
-	      zoom: 15,
+	      zoom: 9,
 	      animation: google.maps.Animation.DROP,
 	      center: myLatLng
         });
+		<?php 
+
+  			if ($info_user->Latitude != 10.762622 && $info_user->Longitude != 106.660172) {
+  		?>
+        var marker = new google.maps.Marker({
+		          position: myLatLng,
+		          map: map,
+		          title: 'Hello World!',
+		          center: myLatLng,
+		          //icon: 'public/image/markers/MapMarker_Flag4_Left_Azure.png',
+		          animation: google.maps.Animation.DROP,
+		    });
 
         <?php
+    	}
 		foreach ($dvtns as $dvtn) {	
+
 		?>
 			var lat = parseFloat({{$dvtn->LatitudeDV}});
 			var lng = parseFloat({{$dvtn->LongitudeDV}});
@@ -68,26 +85,21 @@ Home
 		          position: {lat: lat, lng: lng},
 		          map: map,
 		          title: 'Hello World!',
-		          icon: 'public/image/markers/MapMarker_Flag4_Left_Red.png',
+		          icon: 'public/image/markers/MapMarker_Flag4_Left_Azure.png',
 		          animation: google.maps.Animation.DROP,
 		    });
 
-		    var s = "{{route('dk.sk', $dvtn->IDSK)}}";
-		    var d = "{{route('huy.sk', $dvtn->IDSK)}}";
-		    var tendv = "{{route('dvtn', $dvtn->IDDV)}}";
-		    var tensk = "{{route('sk', $dvtn->IDSK)}}";
-		    var dssk = "{{route('dssk', $dvtn->IDDV)}}";
 		    google.maps.event.addListener(marker, 'click', function() {
           	  infowindow.setContent('<div id="content">'+
-			      '<h6 id="firstHeading" class="firstHeading">Tên: <a href="'+ tendv +'">'+'{{$dvtn->TenDV}}'+'</a></h6>'+
-			      '<h6 id="firstHeading" class="firstHeading">Tên sự kiện: <a href="'+ tensk +'">'+'{{$dvtn->TenSK}}'+'</a></h6>'+
-			      '<p>Địa điểm: '+'{{$dvtn->DDSK}}'+'</p>'+
-			      '<p>Thời gian: '+'{{$dvtn->TGSK}}'+'</p>'+
-			      '<p>Còn <a href="'+ dssk +'" class="btn btn-danger btn-sm">'+'{{$dvtn->demsk}}'+' </a> sự kiện chưa xem</p>' +
-			      '@if(isset($dvtn->dadangky))'+
-			      '<a href="'+ d +'" class="btn btn-warning btn-sm float-right">{{$dvtn->dadangky}}Hủy Đăng ký</a>'+
-			      '@elseif(!isset($dvtn->dadangky))'+
-			      '<a href="'+ s +'" class="btn btn-success btn-sm float-right">Đăng ký</a>'+
+			      '<h6 id="firstHeading" class="firstHeading">Tên: <a href="'+ "{{route('dvtn', $dvtn->first_sukien->IDDV)}}" +'">'+'{{$dvtn->first_sukien->TenDV}}'+'</a></h6>'+
+			      '<h6 id="firstHeading" class="firstHeading">Tên sự kiện: <a href="'+ "{{route('sk', $dvtn->first_sukien->IDSK)}}" +'">'+'{{$dvtn->first_sukien->TenSK}}'+'</a></h6>'+
+			      '<p>Địa điểm: '+'{{$dvtn->first_sukien->DDSK}}'+'</p>'+
+			      '<p>Thời gian: '+'{{$dvtn->first_sukien->TGSK}}'+'</p>'+
+			      '<p>Còn <a href="'+ "{{route('dssk', $dvtn->first_sukien->IDDV)}}" +'" class="btn btn-danger btn-sm">'+'{{$dvtn->demsk}}'+' </a> sự kiện chưa xem</p>' +
+			      '@if(!isset($dvtn->dadangky) || $dvtn->dadangky != 1)'+
+			      '<a href="'+  "{{route('dk.sk', $dvtn->first_sukien->IDSK)}}" +'" class="btn btn-success btn-sm float-right">Đăng ký</a>'+
+			      '@elseif($dvtn->dadangky == 1)'+
+			      '<a href="'+ "{{route('huy.sk', $dvtn->first_sukien->IDSK)}}" +'" class="btn btn-warning btn-sm float-right">Hủy Đăng ký</a>'+
 			      '@endif'+
 			      '</div>');
 

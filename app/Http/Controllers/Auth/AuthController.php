@@ -84,7 +84,7 @@ class AuthController extends Controller
             $dvtn->LatitudeDV = $ladv;
             $dvtn->DVHDDV = $data['dvhd'];
             $dvtn->SDTDV = $data['sdt'];
-            $dvtn->AvatarDV = $data['avatar'];
+            $dvtn->AvatarDV = "";
             
             
 
@@ -96,14 +96,14 @@ class AuthController extends Controller
             $dvtn->idDVTN = $id->id;
             $dvtn->ThongtinDV = $data['ttdv'];
             $dvtn->save();
-            //return redirect()->route('index', compact('a'));
+            return $a;
             
         }
         else
         {
            $id = User::select('id')->orderBy('id', 'DESC')->first();
-            $longdv = settype($data['longdv'], "double");
-            $ladv = settype($data['ladv'], "double");
+            $longdv = $data['longdv'];
+            $ladv = $data['ladv'];
             $dvtn = new TV;
             $dvtn->IDTV = $data['iddvtv'];
             $dvtn->Ten = $data['tentv'];
@@ -111,7 +111,7 @@ class AuthController extends Controller
             $dvtn->Latitude = $ladv;
             $dvtn->DVHD = $data['dvhdtv'];
             $dvtn->SĐT = $data['sdttv'];
-            $dvtn->Avatar = $data['avatartv'];
+            $dvtn->Avatar = "";
 
             // $file_name  = $data->file('avatartv')->getClientOriginalName();
             // $dvtn->Avatar     = $file_name;
@@ -122,7 +122,7 @@ class AuthController extends Controller
             $dvtn->Thongtin = $data['ttdvtv'];
             $dvtn->Status =1;
             $dvtn->save();
-            return $a; 
+            return $a;
         }
 
         return $a;

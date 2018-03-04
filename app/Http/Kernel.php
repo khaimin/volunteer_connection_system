@@ -52,5 +52,6 @@ class Kernel extends HttpKernel
         'CheckUserTV'=> \App\Http\Middleware\CheckUserTV::class,
         'CheckUserDVTN'=> \App\Http\Middleware\CheckUserDVTN::class,
         'CheckAdmin'=> \App\Http\Middleware\CheckAdmin::class,
+        'CheckIndex'=> \App\Http\Middleware\CheckIndex::class,
     ];
 }
